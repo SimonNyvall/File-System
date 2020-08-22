@@ -1,5 +1,6 @@
 #region Form
 #
+#
     [void] [reflection.assembly]::LoadWithPartialName("System.Windows.Forms") | Out-Null
 
     $Form1 = New-Object System.Windows.Forms.Form
