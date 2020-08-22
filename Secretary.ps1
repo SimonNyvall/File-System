@@ -1,3 +1,55 @@
+#region Form
+    [void] [reflection.assembly]::LoadWithPartialName("System.Windows.Forms") | Out-Null
+
+    $Form1 = New-Object System.Windows.Forms.Form
+    
+    #region path
+    #Path buttoms and textbox.
+    $pathButtonOrg = New-Object System.Windows.Forms.Button
+    $pathButtonDest = New-Object System.Windows.Forms.Button
+
+    $pathTextBoxOrg = New-Object System.Windows.Forms.TextBox
+    $pathTextBoxDest = New-Object System.Windows.Forms.TextBox
+
+    $pathGroup = New-Object System.Windows.Forms.GroupBox
+
+    #region Buttons size, location
+    #Buttons
+    $pathButtonOrg.Location = New-Object "System.Drawing.Point" -ArgumentList 308,61
+    $pathButtonOrg.Size = New-Object "System.Drawing.Size" -ArgumentList 75,26
+
+    $pathButtonDest.Location = New-Object "System.Drawing.Point" -ArgumentList 308,113
+    $pathButtonDest.Size = New-Object "System.Drawing.Size" -ArgumentList 75,26
+
+    #TextBox
+    $pathTextBoxOrg.Location = New-Object "System.Drawing.Point" -ArgumentList 6,61
+    $pathTextBoxOrg.Size = New-Object "System.Drawing.Size" -ArgumentList 296,26
+
+    $pathTextBoxDest.Location = New-Object "System.Drawing.Point" -ArgumentList 6,113
+    $pathTextBoxDest.Size = New-Object "System.Drawing.Size" -ArgumentList 296,26
+
+    $pathGroup.Location = New-Object "System.Drawing.Point" -ArgumentList 12, 36
+    $pathGroup.Size = New-Object "System.Drawing.Size" -ArgumentList 399,168
+    $pathGroup.Text = 'Location Input'
+    #endregion
+
+    $Form1.Controls.add($pathButtonOrg)
+    $Form1.Controls.add($pathButtonDest)
+    $Form1.Controls.add($pathTextBoxOrg)
+    $Form1.Controls.add($pathTextBoxDest)
+
+    $Form1.Controls.add($pathGroup)
+    #endregion
+
+    #region sort
+    $sortGroup = New-Object System.Windows.Forms.GroupBox
+    
+    #endregion
+
+    $Form1.ShowDialog()
+#endregion
+
+#region File transport
 #Moves files.
 function MoveFile ($souse, $newLocation){
     try {
@@ -45,6 +97,7 @@ function checkForFileTag {
     tagFolderSort;
 }
 
+$orgSort = Read-Host 'What folder do you like to sort?';
 #Gets the probibilitis of the diritory.
 Get-ChildItem -Path $orgSort
 
@@ -66,7 +119,7 @@ if ($awnser -eq 'y'){
 
 #vars.
 $tagArray =@();
-$orgSort = Read-Host 'What folder do you like to sort?';
 $newSort;
-$compareAlphabet = "A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","Å","Ä","Ö","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","å","ä","ö";
-$folderAlphabet = "A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","Å","Ä","Ö";
+$compareAlphabet = "A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","Å","Ä","Ö","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z";
+$folderAlphabet = "A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z";
+#endregion
