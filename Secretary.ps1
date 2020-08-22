@@ -3,7 +3,7 @@
 
 $Form1 = New-Object System.Windows.Forms.Form
     
-#region path
+#region Path Form
 #Path buttoms and textbox.
 $pathButtonOrg = New-Object System.Windows.Forms.Button
 $pathButtonDest = New-Object System.Windows.Forms.Button
@@ -39,21 +39,74 @@ $Form1.Controls.add($pathTextBoxOrg)
 $Form1.Controls.add($pathTextBoxDest)
 
 $Form1.Controls.add($pathGroup)
-#endregion
+#endregion Path Form
 
-#region sort
+#region Form Sorting
 $sortGroup = New-Object System.Windows.Forms.GroupBox
-    
+
 #Check box.
 $sortCheckBox_ABC = New-Object System.Windows.Forms.CheckBox
 $sortCheckBox_Tag = New-Object System.Windows.Forms.CheckBox
 $sortCheckBox_Date = New-Object System.Windows.Forms.CheckBox
 $sortCheckBox_Sort = New-Object System.Windows.Forms.CheckBox
-    
-#endregion
+
+#Sets the location and sezes of the sorting GUI
+$sortGroup.Location = New-Object "System.Drawing.Point" -ArgumentList 1, 1
+$sortGroup.Size = New-Object "System.Drawing.Size" -ArgumentList 1, 1
+
+$sortCheckBox_ABC.Location = New-Object "System.Drawing.Point" -ArgumentList 1, 1
+$sortCheckBox_ABC.Size = New-Object "System.Drawing.Size" -ArgumentList 1, 1
+
+$sortCheckBox_Tag.Location = New-Object "System.Drawing.Point" -ArgumentList 1, 1
+$sortCheckBox_Tag.Size = New-Object "System.Drawing.Size" -ArgumentList 1, 1
+
+$sortCheckBox_Date.Location = New-Object "System.Drawing.Point" -ArgumentList 1, 1
+$sortCheckBox_Date.Size = New-Object "System.Drawing.Size" -ArgumentList 1, 1
+
+$sortCheckBox_Sort.Location = New-Object "System.Drawing.Point" -ArgumentList 1, 1
+$sortCheckBox_Sort.Size = New-Object "System.Drawing.Size" -ArgumentList 1, 1
+
+#Adding to the control group
+$Form1.Controls.add($sortGroup)
+$Form1.Controls.add($sortCheckBox_ABC)
+$Form1.Controls.add($sortCheckBox_Tag)
+$Form1.Controls.add($sortCheckBox_Date)
+$Form1.Controls.add($sortCheckBox_Sort)
+
+#Sort Buttons and textbox for moving files.
+$sortButtonSort = New-Object System.Windows.Forms.Button
+$sortButtonReset = New-Object System.Windows.Forms.Button
+
+$sortTextBoxMovinglist = New-Object System.Windows.Forms.TextBox
+
+$sortProgressbar = New-Object System.Windows.Forms.ProgressBar
+
+#Seze and location for sorting buttons, textbox and progressbar
+$sortButtonSort.Location = New-Object "System.Drawing.Point" -ArgumentList 1, 1
+$sortButtonSort.Size = New-Object "System.Drawing.Size" -ArgumentList 1, 1
+
+$sortButtonReset.Location = New-Object "System.Drawing.Point" -ArgumentList 1, 1
+$sortButtonSort.Size = New-Object "System.Drawing.Size" -ArgumentList 1, 1
+
+$sortTextBoxMovinglist.Location = New-Object "System.Drawing.Point" -ArgumentList 1, 1
+$sortTextBoxMovinglist.Size = New-Object "System.Drawing.Size" -ArgumentList 1, 1
+
+$sortProgressbar.Location = New-Object "System.Drawing.Point" -ArgumentList 1, 1
+$sortProgressbar.Size = New-Object "System.Drawing.Size" -ArgumentList 1, 1
+
+#Adding to form control
+$Form1.Controls.Add($sortButtonSort)
+$Form1.Controls.Add($sortButtonReset)
+$Form1.Controls.Add($sortTextBoxMovinglist)
+$Form1.Controls.Add($sortProgressbar)
+#endregion Form Sorting
+
+#region text and Info
+
+#endregion Text and Info
 
 $Form1.ShowDialog()
-#endregion
+#endregion Form
 
 #region File transport
 #Moves files.
