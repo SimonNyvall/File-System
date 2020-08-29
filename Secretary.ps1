@@ -181,40 +181,15 @@ $sortCheckBox_Sort.Text = 'Move'
 
 #endregion Creating Form
 
-#region Form Event
-    $folderBrowser = New-Object System.Windows.Forms.FolderBrowserDialog
-
-    $pathButtonOrg.Add_Click({
-        $folderBrowser.ShowDialog()
-        $pathTextBoxOrg.Text = $folderBrowser.SelectedPath
-        $orgSort = $folderBrowser.SelectedPath
-    })
-
-    $pathButtonDest.Add_Click({
-        $folderBrowser.ShowDialog()
-        $pathTextBoxDest.Text = $folderBrowser.SelectedPath
-        $newSort = $folderBrowser.SelectedPath
-    })
-    
-    $sortButtonReset.Add_Click({
-        $orgSort = $null
-        $newSort = $null
-
-        $pathTextBoxOrg.Text = $null
-        $pathTextBoxDest.Text = $null
-    })
-
-    $Form1.ShowDialog()
-#endregion Form Event
-
 #region File Transport
 #Moves files.
 function MoveFile ($souse, $newLocation) {
     try {
         Move-Item -Path $souse -Destination $newLocation;
+        $sortTextBoxMovinglist.Text += 'Moving from ' + $souse + ' to ' + $newLocation + '\n'
     }
     catch {
-        Write-Host 'Computing file...';
+        $sortTextBoxMovinglist.Text += 'Computing file...' + '\n'
     }
 }
 function ABCFolderSort {
@@ -239,7 +214,7 @@ function tagFolderSort {
     #Sort the files by tag type.
     foreach ($file in Get-ChildItem -Path $orgSort) {
         foreach ($tag in $tagArray) {
-            $comapreTag = $file.ToString().Split(".")[1];
+            $comapreTag = $file.ToString().Split(".")[$file.Length];
             if ($comapreTag -eq $tag) {
                 MoveFile -souse $file -newLocation ($newSort + "\" + $tag);
             }
@@ -250,37 +225,71 @@ function tagFolderSort {
 function checkForFileTag {
     $tagArray = @();
     foreach ($file in Get-ChildItem $orgSort -Name) {
-        $tagArray += $file.split(".")[1];
+        $tagArray += $file.split(".")[$file.Length];
     }
     tagFolderSort;
 }
-function main {
-
-    #Gets the probibilitis of the diritory.
-    Get-ChildItem -Path $orgSort
-
-    #Asks the user.
-    Write-Host '[y / N]';
-    $awnser = Read-Host;
-    if ($awnser -eq 'y') {
-        $newSort = Read-Host 'Enter new location';
-
-        $SortAwnser = Read-Host 'ABC sort or tag sort?';
-        if ($SortAwnser -eq "ABC") {
-            ABCFolderSort;
-        }
-        else {
-            checkForFileTag;
-        }
+#Sort by date.
+function folderDateSort {
+    foreach ($fileDate in Get-Item $orgSort | foreach {$_.LastWriteTime}){
+        New-Item -Path ($newSort + '\' + $fileDate) -ItemType Directory
     }
-    elseif ($awnser -eq 'N') {
-        Write-Host 'Program Termination...';
+    foreach ($oldFile in Get-ChildItem -Path $orgSort){
+        foreach ($newFile in Get-Childitem -Path $newSort){
+            if ($oldFile.LastWriteTime -eq $newFile.LastWriteTime){
+                MoveFile -souse $orgSort -newLocation $newSort;
+            }
+        }
     }
 }
 #vars.
 $orgSort
-$tagArray = @();
-$newSort;
+$tagArray = @()
+$newSort
+
+$sortAwnser
+
 $compareAlphabet = "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "Å", "Ä", "Ö", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z";
 $folderAlphabet = "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z";
 #endregion File Transport
+
+#region Form Event
+    $folderBrowser = New-Object System.Windows.Forms.FolderBrowserDialog
+
+    $pathButtonOrg.Add_Click({
+        $folderBrowser.ShowDialog()
+        $pathTextBoxOrg.Text = $folderBrowser.SelectedPath
+        $orgSort = $folderBrowser.SelectedPath
+    })
+
+    $pathButtonDest.Add_Click({
+        $folderBrowser.ShowDialog()
+        $pathTextBoxDest.Text = $folderBrowser.SelectedPath
+        $newSort = $folderBrowser.SelectedPath
+    })
+    
+    $sortButtonReset.Add_Click({
+        $orgSort = $null
+        $newSort = $null
+
+        $pathTextBoxOrg.Text = $null
+        $pathTextBoxDest.Text = $null
+    })
+
+    $sortButtonSort.Add_Click({
+        if ($sortCheckBox_ABC.Checked){
+            ABCFolderSort;
+        } 
+        elseif ($sortCheckBox_Tag.Checked){
+            checkForFileTag;
+        }
+        elseif ($sortCheckBox_Date.Checked){
+            folderDateSort;
+        }
+        elseif ($sortCheckBox_Sort){
+            MoveFile -souse $orgSort -newLocation $newSort
+        }
+    })
+
+    $Form1.ShowDialog()
+#endregion Form Event
